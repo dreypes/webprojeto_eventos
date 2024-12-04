@@ -1,28 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <title>Sistema de Gerenciamento de Eventos</title>
-</head>
-<body>
-    <br>
-    <h2>Sistema de Gerenciamento de Eventos<h2\>
-    <br>
-    <hr>
+{% extends 'base.html' %}
 
-    <br>
-    <h3>Usuário<h3\>
-    <br>
-    <hr>
-    
-    <h3>Eventos<h3\>
-    <br>
-    <hr>
-    
-    <h3>Convites<h3\>
-    <br>
-    <hr>
-</body>
-</html>
+{% block title %} 
+    Sistema de Gerenciamento de Eventos
+{% endblock %} 
+
+{% block content %} 
+<div class="content-wrap">
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col text-center">
+                <h1>Bem-vindo ao Sistema de Gerenciamento de Eventos</h1>
+                <hr>
+                <br>
+                <p class="lead">Este sistema foi desenvolvido para gerenciar os diversos tipos de eventos, os usuários podem convidar outros usuários para diferentes tipos de eventos, o convite possui dados do evento como o nome do evento, local, a data  </p>
+                <br>
+                <p>Através deste sistema, é possível organizar os eventos que o usuário foi convidado. Os dados asseguram que os usuários que foram convidados possam ter acesso as informações do evento.</p>                
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

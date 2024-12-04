@@ -4,12 +4,49 @@ from django.http import HttpResponseForbidden
 #from django.contrib.auth.decorators import login_required
 from .models import Evento, Usuario, Convite, Local
 from .forms import EventoForm, UsuarioForm, ConviteForm, LocalForm
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
 
 #chama a pagina index
 def index(request):
 
     return render(request,'app_eventos/index.html')
 
+
+# Criar usuários
+def criar_usuario(request):
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            messages.success(request, 'Usuário criado com sucesso!')
+            return redirect('listar_usuarios')  # Redirecione para uma página existente
+        else:
+            messages.error(request, 'Erro ao criar o usuário.')
+    else:
+        form = UserCreationForm()
+
+    return render(request, 'app_eventos/usuario.html', {'form': form})
+
+def listar_usuarios(request):
+    usuarios = User.objects.all()
+    return render(request, 'app_eventos/listar_usuarios.html', {'usuarios': usuarios})
+
+
+#Criar convite
+def criar_convite(request):
+    if request.method == "POST":
+        form = ConviteForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Convite criado com sucesso!')
+            return redirect('listar_convites')  # Redirecione para uma página existente
+        else:
+            messages.error(request, 'Erro ao criar o convite.')
+    else:
+        form = ConviteForm()
+
+    return render(request, 'app_eventos/form_convite.html', {'form': form})
 
 # Cadastro de locais
 #@login_required

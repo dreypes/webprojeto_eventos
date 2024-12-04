@@ -31,6 +31,10 @@ urlpatterns = [
     
     # Caminho para o sistema de gestão de eventos
     path('gestao_eventos/', views.gestao_eventos, name='gestao_eventos'),
+    
+    # Usuário
+    path('usuarios/criar/', views.criar_usuario, name='criar_usuario'),
+    path('usuarios/', views.listar_usuarios, name='listar_usuarios'),
 
     # Locais
     path('local/novo', (views.criar_local), name='criar_local'),
@@ -45,6 +49,7 @@ urlpatterns = [
     path('eventos/', (views.listar_eventos), name='listar_eventos'),
 
     # Convites
+    path('convites/criar/', views.criar_convite, name='criar_convite'),
     path('convite/enviar/<int:evento_id>/', (views.enviar_convite), name='enviar_convite'),
     path('convite/gerenciar/<int:convite_id>/', (views.gerenciar_convite), name='gerenciar_convite'),
 

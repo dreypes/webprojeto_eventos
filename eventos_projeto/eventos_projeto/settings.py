@@ -55,8 +55,8 @@ ROOT_URLCONF = 'eventos_projeto.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
+        'DIRS': [BASE_DIR / 'templates'],  # Verifique se a pasta templates está incluída
+        'APP_DIRS': True,  # Deve estar ativado para buscar templates nas pastas de apps
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
