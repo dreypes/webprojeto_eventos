@@ -43,8 +43,8 @@ class UsuarioForm(forms.ModelForm):
             'cpf': 'CPF',
         }
         widgets = {
-            'usuario': forms.Select(attrs={'class': 'form-control'}),
-            'cpf': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'CPF'}),
+            'usuario': forms.TextInput(attrs={'class': 'form-control'}),
+            'cpf': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
 

@@ -35,6 +35,10 @@ urlpatterns = [
     # Usuário
     path('usuarios/criar/', views.criar_usuario, name='criar_usuario'),
     path('usuarios/', views.listar_usuarios, name='listar_usuarios'),
+    path('usuarios/editar/<int:usuario_id>/', views.editar_usuario, name='editar_usuario'),
+    path('usuarios/excluir/<int:usuario_id>/', views.excluir_usuario, name='excluir_usuario'),
+
+    
 
     # Locais
     path('local/novo', (views.criar_local), name='criar_local'),

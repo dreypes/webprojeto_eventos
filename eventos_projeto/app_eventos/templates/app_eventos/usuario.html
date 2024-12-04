@@ -3,12 +3,93 @@
 {% block title %}Cadastro de Usuários{% endblock %}
 
 {% block content %}
-<div class="container mt-4">
-    <h2>Cadastro de Usuários</h2>
-    <form action="" method="post" class="form-control">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary mt-3">Salvar</button>
-    </form>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<div class="container-sm">
+    <!-- Content here -->  
+    {% if messages %}
+    <div>
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <div class="card">
+        <div class="card-header">
+            Cadastrar Usuários
+        </div>
+        <div class="card-body">
+            <form method="POST" 
+            action="{% if usuario.id %}
+                         {% url 'editar_usuario' usuario.id %}
+                    {% else %}
+                         {% url 'criar_usuario' %}
+                    {% endif %}">
+                {% csrf_token %}
+                <div class="mb-3">    
+                    {{ form.usuario.label_tag }}
+                    {{ form.usuario }}
+                </div>    
+                <div class="mb-3">
+                    {{ form.cpf.label_tag }}
+                    {{ form.cpf }}
+                </div>
+                <input type="hidden" id="{{usuario.id}}">
+                <button type="submit" class="btn btn-primary">Salvar</button>    
+            </form>    
+        </div>        
+    </div>
+    <div class="card">
+        <div class="card-header">
+            Lista de Usuários Cadastrados
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <td>#ID</td>
+                            <td>Usuário</td>
+                            <td>CPF</td>
+                            <td>Alterar</td>
+                            <td>Excluir</td>
+                        </tr>    
+                    </thead>
+                    <tbody>
+                        {% for i in lista_usuarios %}
+                        <tr>
+                            <td>{{i.id}}</td>
+                            <td>{{i.usuario}}</td>
+                            <td>{{i.cpf}}</td>
+                            <td><a href="{% url 'editar_usuario' i.id %}"  class="btn btn-primary">Alterar</a></td>
+                            <td><a href="{% url 'excluir_usuario' i.id %}" class="btn btn-primary" onclick="confirmDelete(event, this);">Excluir</a></td>
+                        </tr>    
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>        
+    </div>
 </div>
+<script>
+    function confirmDelete(event, element) {
+        event.preventDefault();  // Impede o link de ser seguido imediatamente
+        Swal.fire({
+            title: 'Tem certeza?',
+            text: "Você não poderá desfazer esta ação! Lembre-se caso tenha setores cadastrados estes serão excluidos também!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Sim, excluir!',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = element.href;  // Se confirmado, segue o link de exclusão
+            }
+        })
+    }
+    </script>
 {% endblock %}

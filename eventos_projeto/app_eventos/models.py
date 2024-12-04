@@ -26,7 +26,7 @@ class Evento(models.Model):
 
 # Classe Usuario (extendendo a funcionalidade do User)
 class Usuario(models.Model):
-    usuario = models.OneToOneField(User, on_delete=models.CASCADE)
+    usuario = models.CharField(max_length=50, unique=True)
     cpf = models.CharField(max_length=14, unique=True)
 
     def __str__(self):

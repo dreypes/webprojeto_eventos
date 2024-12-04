@@ -12,26 +12,72 @@ def index(request):
 
     return render(request,'app_eventos/index.html')
 
-
 # Criar usuários
 def criar_usuario(request):
-    if request.method == "POST":
-        form = UserCreationForm(request.POST)
+    if request.method == 'POST':
+        form = UsuarioForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            messages.success(request, 'Usuário criado com sucesso!')
-            return redirect('listar_usuarios')  # Redirecione para uma página existente
-        else:
-            messages.error(request, 'Erro ao criar o usuário.')
+            form.save()
+            # Passa os dados atualizados para o template
+            usuarios = Usuario.objects.all()  # Atualiza a lista de usuários
+            form = UsuarioForm()  # Cria um novo formulário vazio
+            return render(request, 'app_eventos/usuario.html', {
+                'form': form,
+                'lista_usuarios': usuarios,
+                'mensagem': 'Usuário criado com sucesso!',
+            })
     else:
-        form = UserCreationForm()
+        form = UsuarioForm()
 
-    return render(request, 'app_eventos/usuario.html', {'form': form})
+    # Caso não seja POST, renderiza normalmente a página com a lista de usuários
+    usuarios = Usuario.objects.all()
+    return render(request, 'app_eventos/usuario.html', {'form': form, 'lista_usuarios': usuarios})
 
+
+# Listar usuários
+#def listar_usuarios(request):
+ ##  return render(request, 'app_eventos/usuario.html', {'lista_usuarios': usuarios})
 def listar_usuarios(request):
-    usuarios = User.objects.all()
-    return render(request, 'app_eventos/listar_usuarios.html', {'usuarios': usuarios})
+    usuarios = Usuario.objects.all()
+    form = UsuarioForm()  # Add this line to show the form
+    return render(request, 'app_eventos/usuario.html', {'lista_usuarios': usuarios, 'form': form})
 
+
+
+# Editar usuário
+def editar_usuario(request, usuario_id):
+    usuario = get_object_or_404(Usuario, id=usuario_id)
+
+    if request.method == "POST":
+        form = UsuarioForm(request.POST, instance=usuario)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Usuário atualizado com sucesso!")
+            return redirect('listar_usuarios')
+        else:
+            messages.error(request, "Erro ao atualizar o usuário. Verifique os dados fornecidos.")
+    else:
+        form = UsuarioForm(instance=usuario)
+
+    return render(request, 'app_eventos/usuario.html', {'form': form, 'usuario': usuario})
+
+
+# Excluir usuário
+def excluir_usuario(request, usuario_id):
+    # Tenta encontrar o usuário pelo ID ou retorna um erro 404
+    usuario = get_object_or_404(Usuario, id=usuario_id)
+    
+    # Exclui o usuário do banco de dados
+    usuario.delete()
+    
+    # Recarrega a página com os dados atualizados
+    usuarios = Usuario.objects.all()
+    form = UsuarioForm()
+    return render(request, 'app_eventos/usuario.html', {
+        'form': form,
+        'lista_usuarios': usuarios,
+        'mensagem': 'Usuário excluído com sucesso!',
+    })
 
 #Criar convite
 def criar_convite(request):
