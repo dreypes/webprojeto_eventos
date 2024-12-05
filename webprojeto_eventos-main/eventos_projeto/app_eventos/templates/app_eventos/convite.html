@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}Gestão de Convites{% endblock %}
+
+{% block content %}
+<div class="container-sm">
+
+    <!-- Formulário de criação de convite -->
+    <h2>Criar Convite</h2>
+    <form method="POST" action="{% url 'criar_convite' %}">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="evento">Evento</label>
+            <select id="evento" name="evento" class="form-control">
+                {% for evento in eventos %}
+                <option value="{{ evento.id }}">{{ evento.nome }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="convidado">Convidado</label>
+            <select id="convidado" name="convidado" class="form-control">
+                {% for usuario in usuarios %}
+                <option value="{{ usuario.id }}">{{ usuario.username }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Enviar Convite</button>
+    </form>
+
+    <hr>
+
+    <!-- Listagem de convites -->
+    <h2>Convites</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#ID</th>
+                <th>Evento</th>
+                <th>Convidado</th>
+                <th>Status</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for convite in convites %}
+            <tr>
+                <td>{{ convite.id }}</td>
+                <td>{{ convite.evento.nome }}</td>
+                <td>{{ convite.convidado.username }}</td>
+                <td>{{ convite.status }}</td>
+                <td>
+                    <a href="{% url 'alterar_status_convite' convite.id 'Aceito' %}" class="btn btn-success">Aceitar</a>
+                    <a href="{% url 'alterar_status_convite' convite.id 'Recusado' %}" class="btn btn-danger">Recusar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

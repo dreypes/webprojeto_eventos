@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}Cadastro Eventos{% endblock %}
+
+{% block content %}
+<div class="container-sm">
+
+    <!-- Formulário de criação/edição -->
+    <h2>{% if evento %}Editar Evento{% else %}Novo Evento{% endif %}</h2>
+    <form method="POST" action="{% if evento %}{% url 'editar_evento' evento.id %}{% else %}{% url 'criar_evento' %}{% endif %}">
+        {% csrf_token %}
+        <div class="mb-3">
+            {{ form.nome.label_tag }}
+            {{ form.nome }}
+        </div>
+        <div class="mb-3">
+            {{ form.data.label_tag }}
+            {{ form.data }}
+        </div>
+        <div class="mb-3">
+            {{ form.local.label_tag }}
+            {{ form.local }}
+        </div>
+        <div class="mb-3">
+            {{ form.descricao.label_tag }}
+            {{ form.descricao }}
+        </div>
+        <button type="submit" class="btn btn-primary">{% if evento %}Salvar Alterações{% else %}Criar Evento{% endif %}</button>
+    </form>
+
+    <hr>
+
+    <!-- Listagem de eventos -->
+    <h2>Lista de Eventos</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#ID</th>
+                <th>Nome</th>
+                <th>Data</th>
+                <th>Local</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for evento in lista_eventos %}
+            <tr>
+                <td>{{ evento.id }}</td>
+                <td>{{ evento.nome }}</td>
+                <td>{{ evento.data }}</td>
+                <td>{{ evento.local }}</td>
+                <td>
+                    <a href="?editar={{ evento.id }}" class="btn btn-primary">Editar</a>
+                    <a href="{% url 'excluir_evento' evento.id %}" class="btn btn-danger" onclick="return confirm('Tem certeza que deseja excluir este evento?');">Excluir</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
